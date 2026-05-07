@@ -4,7 +4,7 @@ import { InputGroup } from '@/components/ui/inputs';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/inputs/textarea';
 import { z } from 'zod';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -19,6 +19,9 @@ const contactSchema = z.object({
 type ContactInputs = z.infer<typeof contactSchema>;
 
 export default function ContactClient() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const form = useForm<ContactInputs>({
     resolver: zodResolver(contactSchema),
     defaultValues: { firstName: '', lastName: '', email: '', message: '' },
@@ -180,66 +183,68 @@ export default function ContactClient() {
         </div>
       </div>
 
-      <span className="absolute -bottom-32 left-1/2 -translate-x-1/2 z-0">
-        <svg
-          width="930"
-          height="760"
-          viewBox="0 0 930 760"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g opacity="0.3" filter="url(#filter0_f_9248_10254)">
-            <circle cx="380.335" cy="380.335" r="179.665" fill="#FF58D5" />
-          </g>
-          <g opacity="0.7" filter="url(#filter1_f_9248_10254)">
-            <circle cx="549.665" cy="380.335" r="179.665" fill="#4E6EFF" />
-          </g>
-          <defs>
-            <filter
-              id="filter0_f_9248_10254"
-              x="0.669922"
-              y="0.6698"
-              width="759.33"
-              height="759.33"
-              filterUnits="userSpaceOnUse"
-              colorInterpolationFilters="sRGB"
-            >
-              <feFlood floodOpacity="0" result="BackgroundImageFix" />
-              <feBlend
-                mode="normal"
-                in="SourceGraphic"
-                in2="BackgroundImageFix"
-                result="shape"
-              />
-              <feGaussianBlur
-                stdDeviation="100"
-                result="effect1_foregroundBlur_9248_10254"
-              />
-            </filter>
-            <filter
-              id="filter1_f_9248_10254"
-              x="170"
-              y="0.6698"
-              width="759.33"
-              height="759.33"
-              filterUnits="userSpaceOnUse"
-              colorInterpolationFilters="sRGB"
-            >
-              <feFlood floodOpacity="0" result="BackgroundImageFix" />
-              <feBlend
-                mode="normal"
-                in="SourceGraphic"
-                in2="BackgroundImageFix"
-                result="shape"
-              />
-              <feGaussianBlur
-                stdDeviation="100"
-                result="effect1_foregroundBlur_9248_10254"
-              />
-            </filter>
-          </defs>
-        </svg>
-      </span>
+      {mounted && (
+        <span className="absolute -bottom-32 left-1/2 -translate-x-1/2 z-0">
+          <svg
+            width="930"
+            height="760"
+            viewBox="0 0 930 760"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g opacity="0.3" filter="url(#filter0_f_9248_10254)">
+              <circle cx="380.335" cy="380.335" r="179.665" fill="#FF58D5" />
+            </g>
+            <g opacity="0.7" filter="url(#filter1_f_9248_10254)">
+              <circle cx="549.665" cy="380.335" r="179.665" fill="#4E6EFF" />
+            </g>
+            <defs>
+              <filter
+                id="filter0_f_9248_10254"
+                x="0.669922"
+                y="0.6698"
+                width="759.33"
+                height="759.33"
+                filterUnits="userSpaceOnUse"
+                colorInterpolationFilters="sRGB"
+              >
+                <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                <feBlend
+                  mode="normal"
+                  in="SourceGraphic"
+                  in2="BackgroundImageFix"
+                  result="shape"
+                />
+                <feGaussianBlur
+                  stdDeviation="100"
+                  result="effect1_foregroundBlur_9248_10254"
+                />
+              </filter>
+              <filter
+                id="filter1_f_9248_10254"
+                x="170"
+                y="0.6698"
+                width="759.33"
+                height="759.33"
+                filterUnits="userSpaceOnUse"
+                colorInterpolationFilters="sRGB"
+              >
+                <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                <feBlend
+                  mode="normal"
+                  in="SourceGraphic"
+                  in2="BackgroundImageFix"
+                  result="shape"
+                />
+                <feGaussianBlur
+                  stdDeviation="100"
+                  result="effect1_foregroundBlur_9248_10254"
+                />
+              </filter>
+            </defs>
+          </svg>
+        </span>
+      )}
     </section>
   );
 }
