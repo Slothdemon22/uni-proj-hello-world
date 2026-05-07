@@ -21,11 +21,14 @@ export default function ServicesSection() {
   useEffect(() => {
     // Dynamic text cycling
     const interval = setInterval(() => {
+      if (!dynamicWordRef.current) return;
+      
       gsap.to(dynamicWordRef.current, {
         y: -20,
         opacity: 0,
         duration: 0.5,
         onComplete: () => {
+          if (!dynamicWordRef.current) return;
           setCurrentWordIndex((prev) => (prev + 1) % words.length);
           gsap.fromTo(
             dynamicWordRef.current,
@@ -40,7 +43,7 @@ export default function ServicesSection() {
   }, []);
 
   useEffect(() => {
-    let mm = gsap.matchMedia();
+    const mm = gsap.matchMedia();
 
     mm.add(
       {
@@ -48,7 +51,7 @@ export default function ServicesSection() {
         isDesktop: "(min-width: 768px)",
       },
       (context) => {
-        let { isMobile, isDesktop } = context.conditions as {
+        const { isMobile, isDesktop } = context.conditions as {
           isMobile: boolean;
           isDesktop: boolean;
         };
@@ -160,20 +163,25 @@ export default function ServicesSection() {
             }
           );
 
-          gsap.fromTo(gsap.utils.toArray(".service-item"),
-            { y: 30, opacity: 0 },
-            {
-              scrollTrigger: {
-                trigger: servicesListRef.current,
-                start: "top 85%",
-              },
-              y: 0,
-              opacity: 1,
-              duration: 0.8,
-              stagger: 0.15,
-              ease: "power2.out",
-            }
-          );
+          // Scope selectors to the container to avoid global collisions during transitions
+          const serviceItems = gsap.utils.toArray(".service-item", containerRef.current as HTMLDivElement);
+          
+          if (serviceItems.length > 0) {
+            gsap.fromTo(serviceItems,
+              { y: 30, opacity: 0 },
+              {
+                scrollTrigger: {
+                  trigger: servicesListRef.current,
+                  start: "top 85%",
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: "power2.out",
+              }
+            );
+          }
         }
       }
     );
